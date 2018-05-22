@@ -268,13 +268,14 @@ public class HttpUtil {
 	 * @return
 	 */
 	public static String doPostSSL(String apiUrl, Map<String, Object> params) {
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(createSSLConnSocketFactory())
-				.setConnectionManager(connMgr).setDefaultRequestConfig(requestConfig).build();
+		/*CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(createSSLConnSocketFactory())
+				.setConnectionManager(connMgr).setDefaultRequestConfig(requestConfig).build();*/
 		HttpPost httpPost = new HttpPost(apiUrl);
 		CloseableHttpResponse response = null;
 		String httpStr = null;
-
+		SSLClient httpClient=null;
 		try {
+			httpClient=new SSLClient();
 			httpPost.setConfig(requestConfig);
 			List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());
 			for (Map.Entry<String, Object> entry : params.entrySet()) {
@@ -316,13 +317,16 @@ public class HttpUtil {
 	 * @return
 	 */
 	public static String doPostSSL(String apiUrl, Object json) {
-		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(createSSLConnSocketFactory())
-				.setConnectionManager(connMgr).setDefaultRequestConfig(requestConfig).build();
+		SSLClient httpClient=null;
+		//如果用下面代码执行ssl请求会发生异常
+		/*CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(createSSLConnSocketFactory())
+				.setConnectionManager(connMgr).setDefaultRequestConfig(requestConfig).build();*/
 		HttpPost httpPost = new HttpPost(apiUrl);
 		CloseableHttpResponse response = null;
 		String httpStr = null;
 
 		try {
+			httpClient=new SSLClient();
 			httpPost.setConfig(requestConfig);
 			StringEntity stringEntity = new StringEntity(json.toString(), "UTF-8");// 解决中文乱码问题
 			stringEntity.setContentEncoding("UTF-8");
